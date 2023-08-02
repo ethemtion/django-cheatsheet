@@ -37,4 +37,4 @@ def getCoursesByCategoryId(request, category_id):
         redirect_url = reverse('courses_by_category', args=[category_name])
         return redirect(redirect_url)
     except:
-        return HttpResponseNotFound("S")  
+        return HttpResponseNotFound("S")
