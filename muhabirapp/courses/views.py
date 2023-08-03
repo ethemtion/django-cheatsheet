@@ -12,19 +12,29 @@ data = {
 }
 
 
-def kurslar(request):
-    return HttpResponse('Kurs Listesi')
+def index(request):
+    category_list = list(data.keys())
+
+    return render(request, 'courses/index.html', {
+        'categories': category_list
+    })
 
 def details(request, kurs_adi):
     return HttpResponse(f'{kurs_adi} detay sayfası')
 
+
+
 def getCoursesByCategoryName(request, category_name):
     try:
         category_text = data[category_name]
-        return HttpResponse(category_text)
+        return render(request, 'courses/kurslar.html', {
+            'category': category_name,
+            "category_text": category_text
+        })
     except:
         return HttpResponseNotFound("Yanlış kategori seçimi")
         
+
 
 
 def getCoursesByCategoryId(request, category_id):
