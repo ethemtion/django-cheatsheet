@@ -1,3 +1,4 @@
+from datetime import date, datetime
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
@@ -11,12 +12,54 @@ data = {
     "mobil": "Mobil kategorisine ait kurslar",
 }
 
+db = {
+    "courses": [
+        {
+            "title": "JS Kursu",
+            "description": "Javascript kurs açıklaması",
+            "imageUrl": "1.jpg",
+            "slug": "javascript-kursu",
+            "date": datetime.now(),
+            "isActive": True
+        },
+        {
+            "title": "Python Kursu",
+            "description": "Python kurs açıklaması",
+            "imageUrl": "2.jpg",
+            "slug": "Python-kursu",
+            "date": date(2022,9,10),
+            "isActive": True
+
+        },
+        {
+            "title": "Web Geliştirme Kursu",
+            "description": "Web geliştirme kurs açıklaması",
+            "imageUrl": "3.jpg",
+            "slug": "web-gelistirme-kursu",
+            "date": date(2022,11,10),
+            "isActive": True
+
+        },
+    ],
+    "categories": [
+        {"id": 1, "name": "Programlama", "slug":"programlama"}, 
+        {"id": 2, "name": "web geliştirme", "slug":"web-gelistirme"}, 
+        {"id": 3, "name": "mobil Uygulamalar", "slug":"mobil"}, 
+        ]
+}
 
 def index(request):
-    category_list = list(data.keys())
+    kurslar = [course for course in db["courses"] if course["isActive"]]
+    kategoriler = db["categories"]
+
+    # for kurs in db["courses"]:
+    #     if kurs["isActive"]:
+    #         kurslar.append(kurs)
+
 
     return render(request, 'courses/index.html', {
-        'categories': category_list
+        'categories': kategoriler,
+        "courses": kurslar
     })
 
 def details(request, kurs_adi):
