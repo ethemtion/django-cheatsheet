@@ -23,7 +23,7 @@ class Course(models.Model):
     date =  models.DateField(auto_now=True)#auto_now olabilirdi
     isActive = models.BooleanField()
     slug = models.SlugField(default="", blank=True, editable=False, null=False, unique=True, db_index=True)
-    category = models.ForeignKey(Categories, on_delete=models.CASCADE, default=1)
+    category = models.ForeignKey(Categories, on_delete=models.CASCADE, default=1, related_name="kurslar")
 
 
     def save(self, *args, **kwargs):
@@ -35,3 +35,4 @@ class Course(models.Model):
         return f"{self.title} {self.date}"
     
 
+#c1.course_set.all() categorye ait kurslar (related_name kurslar -> c1.kurslar.all())
