@@ -75,27 +75,13 @@ def details(request, slug):
         raise Http404()
 
 
-def getCoursesByCategoryName(request, category_name):
-    try:
-        category_text = data[category_name]
-        return render(request, 'courses/kurslar.html', {
-            'category': category_name,
-            "category_text": category_text
-        })
-    except:
-        return HttpResponseNotFound("Yanlış kategori seçimi")
-        
+def getCoursesByCategoryName(request, slug):
+   kurslar = Course.objects.filter(category__slug=slug, isActive=True)
+   kategoriler = Categories.objects.all()
 
+   return render(request, 'courses/index.html', {
+       'categories': kategoriler,
+       'courses': kurslar,
+       'selectedSlug': slug
+   })
 
-
-def getCoursesByCategoryId(request, category_id):
-    # return HttpResponse(category_id)
-
-    category_list = list(data.keys())
-    try:
-        category_name = category_list[category_id-1]
-
-        redirect_url = reverse('courses_by_category', args=[category_name])
-        return redirect(redirect_url)
-    except:
-        return HttpResponseNotFound("S")

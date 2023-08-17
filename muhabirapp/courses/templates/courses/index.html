@@ -18,9 +18,19 @@ Kurslar
 
         <!--CONTENT-->
         <div class="col-9">
-            {% for course in  courses%}
-                {% include 'courses/partials/_course.html' %}
-            {% endfor courses %}
+        {% if  courses|length  == 0 %}
+            <figure class="text-center text-danger bg-black ">
+                <blockquote class="blockquote ">
+                <p>Ben bu kursu yapana kadar beklemede kalcan kanka.</p>
+                </blockquote>
+                <figcaption class="blockquote-footer">
+                Etoboi
+                </figcaption>
+            </figure>           
+        {% endif %}
+        {% for course in  courses%}
+            {% include 'courses/partials/_course.html' %}
+        {% endfor courses %}
         </div>
     </div>
 </div>
