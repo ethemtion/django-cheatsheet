@@ -4,7 +4,7 @@ from .models import Course, Categories
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ("title", "date", "isActive", "slug", "category_list")
+    list_display = ("title", "date", "isActive", "isHome", "slug", "category_list")
     list_display_links = (
         "title",
         "slug",
@@ -16,8 +16,9 @@ class CourseAdmin(admin.ModelAdmin):
     list_filter = (
         "date",
         "isActive",
+        "isHome"
     )
-    list_editable = ("isActive",)
+    list_editable = ("isActive","isHome")
     search_fields = ("title", "description", "date")
 
     def category_list(self, obj):

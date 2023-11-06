@@ -1,3 +1,10 @@
-/* body{
-    background-color: rgb(208, 152, 152);
-} */
+.errorlist{
+    list-style-type: none;
+    color: red;
+    margin: 0;
+    padding: 0;
+}
+
+.invalid input, .invalid textarea {
+    border-color: #ea5362;
+}

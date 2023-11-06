@@ -22,9 +22,10 @@ class Categories(models.Model):
 class Course(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
-    imageUrl = models.CharField(max_length=50, blank=False)
+    image = models.ImageField(upload_to="images", default="")
     date = models.DateField(auto_now=True)  # auto_now olabilirdi
-    isActive = models.BooleanField()
+    isActive = models.BooleanField(default=False)
+    isHome = models.BooleanField(default=False)
     slug = models.SlugField(
         default="", blank=True, editable=True, null=False, unique=True, db_index=True
     )
@@ -40,3 +41,7 @@ class Course(models.Model):
 
 
 # c1.course_set.all() categorye ait kurslar (related_name kurslar -> c1.kurslar.all())
+
+
+class UploadModel(models.Model):
+    image = models.ImageField(upload_to="images")

@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block css_files %} <link rel="stylesheet" href="{% static 'courses/css/style.css' %}"> {% endblock css_files %}
+
+{% block title %}
+ Create Course
+{% endblock title %}
+
+
+
+{% block content %}
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-12">
+            {% if error %}
+            <div class="alert alert-danger">
+                {{ errorMsg }}
+            </div>
+            {% endif %}
+            <form action="{% url "create_course" %}" method="POST" novalidate enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                {% for field in form  %}
+                
+                    <div class="mb-3 {% if field.errors %} invalid {% endif %}">
+                        {% if field.errors %}
+                            <div class="alert alert-danger">{{ field.errors}}</div>
+                        {% endif %}
+                        <label class="form-label fs-3" for="{{field.id_for_label}}">{{field.label}}</label>
+                        {{ field}}
+                    </div>
+
+                {% endfor %}
+
+
+{% comment %} 
+                <div class="mb-3 {% if form.title.errors %} invalid {% endif %}">
+                    {{ form.title.errors}}
+                    <label class="form-label fs-3" for="{{form.title.id_for_label}}">Title</label>
+                    {{ form.title}}
+                </div>
+                <div class="mb-3 {% if form.description.errors %} invalid {% endif %}">
+                    {{ form.description.errors}}
+                    <label class="form-label fs-3" for="{{form.description.id_for_label}}">Description</label>
+                    {{ form.description}}
+                </div>
+                <div class="mb-3 {% if form.imageUrl.errors %} invalid {% endif %}">
+                    {{ form.imageUrl.errors}}
+                    <label class="form-label fs-3" for="{{form.imageUrl.id_for_label}}">Image Url</label>
+                    {{ form.imageUrl}}
+                </div>
+                <div class="mb-3 {% if form.slug.errors %} invalid {% endif %}">
+                    {{ form.slug.errors}}
+                    <label class="form-label fs-3" for="{{form.slug.id_for_label}}">Slug</label>
+                    {{ form.slug}}
+                </div> {% endcomment %}
+
+                <button class="btn btn-primary" type="submit">Kaydet</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+{% block js_files %} <script src="{% static 'courses/js/script.js' %}"></script> {% endblock js_files %}
+
