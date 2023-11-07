@@ -11,15 +11,14 @@
 {% block content %}
 <div class="container mt-3">
     <div class="row">
-        <div class="col-4">
-            <!--MENU-->
-            <img class="img-fluid rounded-start" src="{{course.image.url}}" alt="{{ course.title}}">
-        </div>
+        <div class="col-12">
+            <h1>Login</h1>
+            <hr>
+            <form method="POST">
+                {% csrf_token %}
 
-        <!--CONTENT-->
-        <div class="col-8">
-           <h1 class="h3">{{ course.title}}</h1>
-           <p> {{ course.description}}</p>
+               {% include "partials/_form.html" %}
+            </form>
         </div>
     </div>
 </div>

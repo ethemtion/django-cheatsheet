@@ -1,12 +1,9 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from django.http import (
-    Http404,
-)
-
+from django.http import Http404
 from .forms import CourseCreateForm, CourseEditForm, UploadForm
-
 from .models import Course, Categories, UploadModel
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required, user_passes_test
 import random
 import os
 
@@ -47,6 +44,11 @@ def search(request):
     )
 
 
+def isAdmin(user):
+    return user.is_superuser
+
+
+@user_passes_test(isAdmin)
 def create_course(request):
     if request.method == "POST":
         form = CourseCreateForm(request.POST, request.FILES)
@@ -60,6 +62,7 @@ def create_course(request):
     return render(request, "courses/create-course.html", {"form": form})
 
 
+@login_required()  # settingsten login_url ayarlı user_passes_text ten kontrol?
 def course_list(request):
     kurslar = Course.objects.all()
 
@@ -78,6 +81,7 @@ def course_edit(request, id):
     return render(request, "courses/edit-course.html", {"form": form})
 
 
+@login_required()
 def course_delete(request, id):
     course = get_object_or_404(Course, pk=id)
 
@@ -104,6 +108,7 @@ def upload_image(request):
 def details(request, slug):
     try:
         course = Course.objects.get(slug=slug)
+        print(course)
         context = {"course": course}
 
         return render(request, "courses/details.html", context)
