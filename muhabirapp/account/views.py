@@ -1,8 +1,11 @@
 from django.shortcuts import redirect, render
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.models import User
 from django.contrib import messages
-from account.forms import LoginUserForm
+from account.forms import LoginUserForm, UserCreationForm, UserPasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm
+
+# from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 
@@ -45,33 +48,34 @@ def user_logout(request):
 
 def user_register(request):
     if request.method == "POST":
-        username = request.POST["username"]
-        email = request.POST["email"]
-        password = request.POST["password"]
-        repassword = request.POST["repassword"]
+        form = UserCreationForm(request.POST)
 
-        # HOCA BÖYLE KOD MU YAZILIR AQ
-        if password == repassword:
-            if User.objects.filter(username=username).exists():
-                return render(
-                    request, "account/register.html", {"error": "Username is taken."}
-                )
-            else:
-                if User.objects.filter(email=email).exists():
-                    request, "account/register.html", {
-                        "error": "Email is already in use."
-                    }
-                else:
-                    user = User.objects.create_user(
-                        username=username, email=email, password=password
-                    )
-                    user.save()
-                    return redirect("user_login")
+        if form.is_valid():
+            form.save()
 
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password1"]
+            user = authenticate(request, username=username, password=password)
+            login(request, user=user)
+            return redirect("index")
         else:
-            return render(
-                request, "account/register.html", {"error": "Passwords dont match."}
-            )
-
+            return render(request, "account/register.html", {"form": form})
     else:
-        return render(request, "account/register.html")
+        form = UserCreationForm()
+        return render(request, "account/register.html", {"form": form})
+
+
+def change_password(request):
+    if request.method == "POST":
+        form = UserPasswordChangeForm(request.user, request.POST)
+
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, "Parola güncellendi")
+            return redirect("change_password")
+        else:
+            return render(request, "account/change-password.html", {"form": form})
+    else:
+        form = UserPasswordChangeForm(request.user)
+        return render(request, "account/change-password.html", {"form": form})

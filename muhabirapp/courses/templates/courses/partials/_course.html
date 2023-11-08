@@ -15,7 +15,7 @@
         <h5 class="card-title">
           <a href="{% url 'course_details' course.slug %}"> {{ course.title}} </a>
         </h5>
-        <p class="card-text">{{ course.description|truncatechars:25 }}</p>
+        <p class="card-text">{{ course.subtitle }}</p>
         <p>{{course.date|date:"l, d F Y"}}</p>
       </div>
     </div>

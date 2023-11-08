@@ -62,6 +62,7 @@ def create_course(request):
     return render(request, "courses/create-course.html", {"form": form})
 
 
+@user_passes_test(isAdmin)
 @login_required()  # settingsten login_url ayarlı user_passes_text ten kontrol?
 def course_list(request):
     kurslar = Course.objects.all()
@@ -69,6 +70,7 @@ def course_list(request):
     return render(request, "courses/course-list.html", {"courses": kurslar})
 
 
+@user_passes_test(isAdmin)
 def course_edit(request, id):
     course = get_object_or_404(Course, pk=id)
 
