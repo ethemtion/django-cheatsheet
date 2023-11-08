@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Course, Categories
+from .models import Course, Categories, Slider
 
 
 @admin.register(Course)
@@ -13,12 +13,8 @@ class CourseAdmin(admin.ModelAdmin):
     prepopulated_fields = {
         "slug": ("title",),
     }
-    list_filter = (
-        "date",
-        "isActive",
-        "isHome"
-    )
-    list_editable = ("isActive","isHome")
+    list_filter = ("date", "isActive", "isHome")
+    list_editable = ("isActive", "isHome")
     search_fields = ("title", "description", "date")
 
     def category_list(self, obj):
@@ -37,3 +33,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
     def course_count(self, obj):
         return obj.course_set.count()
+
+
+@admin.register(Slider)
+class SliderAdmin(admin.ModelAdmin):
+    list_display = ("title", "course", "isActive")
+    list_editable = ("isActive",)

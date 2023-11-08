@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404
 from .forms import CourseCreateForm, CourseEditForm, UploadForm
-from .models import Course, Categories, UploadModel
+from .models import Course, Categories, Slider, UploadModel
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required, user_passes_test
 import random
@@ -13,13 +13,16 @@ import os
 def index(request):
     kurslar = Course.objects.filter(isActive=1, isHome=1)
     kategoriler = Categories.objects.all()
+    sliders = Slider.objects.filter(isActive=1)
 
     # for kurs in db["courses"]:
     #     if kurs["isActive"]:
     #         kurslar.append(kurs)
 
     return render(
-        request, "courses/index.html", {"categories": kategoriler, "courses": kurslar}
+        request,
+        "courses/index.html",
+        {"categories": kategoriler, "courses": kurslar, "sliders": sliders},
     )
 
 

@@ -45,5 +45,15 @@ class Course(models.Model):
 # c1.course_set.all() categorye ait kurslar (related_name kurslar -> c1.kurslar.all())
 
 
+class Slider(models.Model):
+    title = models.CharField(max_length=100)
+    image = models.ImageField(upload_to="images")
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, blank=True)
+    isActive = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.title}"
+
+
 class UploadModel(models.Model):
     image = models.ImageField(upload_to="images")
